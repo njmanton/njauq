@@ -10,11 +10,15 @@ try {
   console.error('Could not start MySQL: ' + error);
 }
 
-// var salt = crypto.randomBytes(8).toString('hex');
-// console.log('salt', salt);
+// use to manually create a new user
+// const salt = crypto.randomBytes(8).toString('hex'),
+//       username = 'username',
+//       password = 'password';
+
 // db.execute('INSERT INTO Users (Username, password, salt) VALUES (?,?,?)', [
-//   'username',
-//   crypto.pbkdf2Sync('password', salt, 310000, 32, 'sha256').toString('hex'),
+//   username,
+//   crypto.pbkdf2Sync(password, salt, 310000, 32, 'sha256').toString('hex'),
 //   salt
 // ]);
+
 export { db };
