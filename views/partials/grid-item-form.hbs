@@ -1,0 +1,42 @@
+<div class="edit-grid-cell {{#if id }}cell-saved{{/if }}">
+  <form id="form{{ @index }}" data-wid="{{ week_id }}" data-qid="{{ @index }}" method="post" action="">
+    <input type="hidden" name="week" value="{{ week_id }}">
+    <input type="hidden" name="qid" value="{{ @index }}">
+    <div class="form-floating">
+      <input required type="text" id="ans{{ q_order }}" value="{{{ answer_text }}}" class="form-control" placeholder="Q{{ q_order }} Answer (e.g. Silvio)" name="ans">
+      <label for="ans{{ q_order }}">Q{{ q_order }} Answer {{#if @first }}(e.g. Silvio Berlusconi){{/if }}</label>
+    </div>
+    <div data-qid="{{ @index }}" id="pic{{ @index }}" class="drop_zone" data-fn="">
+      {{#if id }}
+      <img class="preview" src="/img/week{{ week_id }}/{{ q_order }}.jpg" alt="{{ answer_text }}">
+      {{ else }}
+      <img class="ph" src="/img/dl.svg" alt="Upload"><p>Drag image here<br>Question {{ q_order }}</p>
+      {{/if }}
+    </div>
+    <div class="form-floating">
+      <input type="text" id="ct{{ q_order }}" value="{{ clarification_text }}" class="form-control" placeholder="Clarification (e.g. the one on the left)" name="ct">
+      <label for="ct{{ q_order }}">Q{{ q_order }} Clarification Text</label>
+    </div>
+    <div class="form-floating">
+      <input required value="{{ link_text }}" type="text" class="form-control" id="lt{{ q_order }}" placeholder="Link Text (e.g. TRIOS)" name="lt">
+      <label for="lt{{ q_order }}">Q{{ q_order }} Link Text</label>
+    </div>
+    <select required class="" name="group" id="">
+      <option>--</option>
+      <option {{ select group_id 'A'}} value="A">A</option>
+      <option {{ select group_id 'B'}} value="B">B</option>
+      <option {{ select group_id 'C'}} value="C">C</option>
+      <option {{ select group_id 'D'}} value="D">D</option>
+      <option {{ select group_id 'E'}} value="E">E</option>
+    </select>
+    <button type="submit" name="submit" value="true" class="button">Save</button>
+    <span id="status{{ q_order }}" data-qid="{{ @index }}">&nbsp;</span>
+  </form>
+</div>
+<style>
+  .drop_zone { margin: 0.2em auto; }
+
+  .edit-grid-cell { margin: 0.2em; border: 2px solid red; }
+
+  .upload_status { background-color: #ff9;}
+</style>

@@ -1,0 +1,188 @@
+<section class="container" data-wid="2">
+  <h1>Create new sheet{{#if user }} - {{ user.username }}{{/if }}</h1>
+  <form action="/uploadText" method="post" enctype="application/x-www-form-urlencoded">
+  <input type="hidden" name="week" value="10" />
+  <aside>
+    <a class="btn btn-primary" type="button" data-bs-toggle="collapse" href="#instructions" role="button" aria-expanded="false" aria-controls="collapseExample">Instructions</a>
+    <div class="collapse" id="instructions">
+      <div class="card card-body">
+        <p>You can use markdown in text descriptions.</p>
+        <ul>
+          <li>_italics_ &gt; <i>italics</i></li>
+          <li>**bold** &gt; <strong>bold</strong></li>
+          <li>~strikethrough~ &gt; <del>strikethrough</del></li>
+        </ul>
+        <p>Drag images from a folder onto the relevant box. Images will be saved as a <code>.jpg</code> and resized to 300px width (preserving the aspect ratio), They must be one of the following formats: <code>.jpg | .jpeg | .gif | .png</code></p>
+      </div>
+    </div>
+  </aside>
+  <fieldset>
+    <legend>Details of Links</legend>
+    <table class="table">
+      <thead>
+        <th scope="col">Link</th>
+        <th scope="col">Explanation</th>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Group A</th>
+          <td><input type="text" required class="form-control" placeholder="(e.g. All Italian Prime Ministers)" name="explanation_text" id=""><input type="hidden" name="group_id" value="A"></td>
+        </tr>
+        <tr>
+          <th scope="row">Group B</th>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="B"></td>
+        </tr>
+        <tr>
+          <th scope="row">Group C</th>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="C"></td>
+        </tr>
+        <tr>
+          <th scope="row">Group D</th>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="D"></td>
+        </tr>
+        <tr>
+          <th scope="row">Group E</th>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="E"></td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+
+  <fieldset>
+    <legend>Details of pictures</legend>
+    <table class="table" id="create_quiz">
+      <thead>
+        <th scope="col">Q.</th>
+        <th scope="col" colspan="2">Image</th>
+        <th scope="col">Text</th>
+        <th scope="col">Group</th>
+      </thead>
+      <tbody>
+        {{#each data }}
+        <tr>
+          <th scope="row">{{ this }}</th>
+          <td>
+            {{!-- <input type="file" name="file1"> --}}
+            <div data-qid="{{ this }}" id="pic{{ this }}" class="drop_zone">
+              <img src="/img/dl.svg" alt="Upload"><p>Drag image here</p>
+            </div>
+          </td>
+          <td>
+            <div class="upload_status" data-qid="{{ this }}">
+              <p>Unsaved</p>
+            </div>
+          </td>
+          <td>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Answer</span>
+              <input type="text" class="form-control" {{#if @first }}placeholder="(e.g. Silvio Berlusconi)"{{/if }} name="ans">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Clarification Text</span>
+              <input type="text" class="form-control" {{#if @first }}placeholder="(e.g. the one on the left)"{{/if }} name="ct">
+              <span class="input-group-text">Link Text</span>
+              <input type="text" class="form-control" name="lt" {{#if @first }}placeholder="(e.g. TRIOS)"{{/if }}>
+            </div>
+          </td>
+          <td>
+            <select class="form-select" name="group" id="">
+              <option selected>Group</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+            </select>
+          </td>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+  </fieldset>
+  <button type="submit" name="submit" value="true" class="button">Upload</button>
+  </form>
+    <!-- Modal -->
+  <div class="modal fade" id="hilite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><span id="modal-id"></span>. <span id="modal-ct"></span></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modal-img" class="img-fluid img-thumbnail" src="" alt="">
+          <p id="modal-ans"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+
+  const endpoints = { IMAGE: '/uploadImage', TEXT: '/uploadText' };
+
+  // set up event handlers for drag'n'drop 
+  $('.drop_zone').on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+    
+    e.preventDefault();
+    e.stopPropagation();
+
+  }).on('dragover dragenter', function(e) {
+
+    $(this).addClass('dragging');
+
+  }).on('dragend dragleave', function(e) {
+
+    $(this).removeClass('dragging');
+
+  }).on('drop', async function(e) {
+
+    e.preventDefault();
+    const _this = $(this),
+          wid = $('section').data('wid'),
+          qid = _this.data('qid');
+
+    const { files } = e.originalEvent.dataTransfer;
+    if (files.length > 1) {
+      console.error('more than file dropped');
+    } else {
+      previewImage(files[0], _this);
+      const res = await uploadImage(files[0], wid, qid);
+      console.log(res);
+      let status = '';
+      if ( res.err ) {
+        status = `<p>There was an error saving the file. Please try again.</p>`;
+      } else {
+        status = `<p>File uploaded as <code>../${ res.fn }</code>.<br>File size ${ res.old_size} to ${ res.new_size } (${ res.reduction }x reduction)<br><a class="upload_preview" data-id="${ qid }" href="/img/${ res.fn }">Preview</a></p>`; 
+      }
+      $(`.upload_status[data-qid="${ qid }"]`).html(status);
+    }
+  });
+
+  const previewImage = (file, tar) => {
+    // preview the file in the drop box
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener('load', e => {
+      const html = `<img src="${ e.target.result }" style="width: 100%; height: 100%;" alt="${ file.name }">`;
+      tar.html(html);
+    })
+  }
+
+  const uploadImage = async (image, wid, qid) => {
+    //use fetch API to submit the image to the server
+    const fd = new FormData();
+    fd.append('image', image, image.name);
+    fd.append('week', wid);
+    fd.append('question', qid)
+
+    const resp = await fetch(endpoints.IMAGE, {
+      method: 'POST',
+      body: fd
+    });
+
+    return await resp.json();
+  }
+
+</script>

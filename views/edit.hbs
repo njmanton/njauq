@@ -1,0 +1,126 @@
+<section class="container" data-wid="{{ week }}">
+  <h2>Add new questions to week {{ week }}</h2>
+  {{!-- the grid --}}
+  <div>
+    <span>Link1</span>
+    <span>Link2</span>
+    <span>Link3</span>
+    <span>Link4</span>
+    <span>Link5</span>
+    <span>Q1</span>
+    <span>Q2</span>
+    <span>Q3</span>
+    <span>Q4</span>
+    <span>Q5</span>
+    <span>Q6</span>
+    <span>Q7</span>
+    <span>Q8</span>
+    <span>Q9</span>
+    <span>Q10</span>
+    <span>Q11</span>
+    <span>Q12</span>
+    <span>Q13</span>
+    <span>Q14</span>
+    <span>Q15</span>
+    <span>Q16</span>
+    <span>Q17</span>
+    <span>Q18</span>
+    <span>Q19</span>
+    <span>Q20</span>
+  </div>
+
+  <div class="accordion" id="qaccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading0">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse0" aria-expanded="true" aria-controls="collapse0">
+          Links 
+        </button>
+      </h2>
+      <div id="collapse0" class="accordion-collapse collapse show" aria-labelledby="heading0" data-bs-parent="#qaccordion">
+        <div class="accordion-body container">
+          <legend>Details of Links</legend>
+          <form id="links_form" method="post" action="">
+            <table class="table">
+              <thead>
+                <th scope="col">Link</th>
+                <th scope="col">Explanation</th>
+              </thead>
+              <tbody>
+                {{#each links }}
+                <tr>
+                  <th scope="row">Group {{ group_id }}</th>
+                  <td>
+                    <input type="text" required value="{{ explanation_text }}" class="form-control" {{#if @first }}placeholder="(e.g. All Italian Prime Ministers)"{{/if }} name="explanation_text" id="">
+                    <input type="hidden" name="group_id" value="{{ group_id }}">
+                  </td>
+                </tr>
+                {{/each }}
+              </tbody>
+            </table>
+            <input type="submit" class="button" value="submit"/>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{#each questions }}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading{{ @index }}">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ @index }}" aria-expanded="false" aria-controls="collapse{{ @index }}">
+          Question {{ @index }} &nbsp;<span data-qid={{ @index }} title="Question saved" class="badge bg-{{#if q_order }}success{{/if }}">{{#if q_order }}S{{/if }}</span>
+        </button>
+      </h2>
+      <div id="collapse{{ @index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ @index }}" data-bs-parent="#qaccordion">
+        <div class="accordion-body container">
+          <form id="form{{ @index }}" data-wid="{{ ../week }}" data-qid="{{ @index }}" method="post" action="">
+            <input type="hidden" name="week" value="{{ ../week }}">
+            <input type="hidden" name="qid" value="{{ @index }}">
+            <div class="row">
+              <div class="col-2">
+                <div data-qid="{{ @index }}" id="pic{{ @index }}" class="drop_zone" data-fn="">
+                  {{#if q_order }}
+                  <img class="preview" src="/img/week{{ ../week}}/{{ q_order }}.jpg" alt="{{ answer_text }}">
+                  {{ else }}
+                  <img class="ph" src="/img/dl.svg" alt="Upload"><p>Drag image here</p>
+                  {{/if }}
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Answer <span style="color: red">&nbsp;*</span></span>
+                  <input required type="text" value="{{{ answer_text }}}" class="form-control" {{#if @first }}placeholder="(e.g. Silvio Berlusconi)"{{/if }} name="ans">
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Clarification Text</span>
+                  <input type="text" value="{{ clarification_text }}" class="form-control" {{#if @first }}placeholder="(e.g. the one on the left)"{{/if }} name="ct">
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Link Text <span style="color: red">&nbsp;*</span></span>
+                  <input required value="{{ link_text }}" type="text" class="form-control" name="lt" {{#if @first }}placeholder="(e.g. TRIOS)"{{/if }}>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="input-group mb-3">
+                <span class="input-group-text">Group: <span style="color: red">&nbsp;*</span></span>
+                <select required class="form-select" name="group" id="">
+                  <option>--</option>
+                  <option {{ select group_id 'A'}} value="A">A</option>
+                  <option {{ select group_id 'B'}} value="B">B</option>
+                  <option {{ select group_id 'C'}} value="C">C</option>
+                  <option {{ select group_id 'D'}} value="D">D</option>
+                  <option {{ select group_id 'E'}} value="E">E</option>
+                </select>
+                </div>
+                <div>
+                  <button type="submit" name="submit" value="true" class="button">Save</button>
+                </div>
+              </div>
+            </div>
+            <div class="upload_status" data-qid="{{ @index }}"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+    {{/each }}
+  </div>
+
+</section>

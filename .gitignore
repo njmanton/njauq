@@ -1,0 +1,9 @@
+node_modules
+assets/data/
+assets/img/
+logs/*.log
+TODO.md
+*.code-workspace
+.vscode
+.DS_Store
+.env

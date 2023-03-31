@@ -1,0 +1,170 @@
+<section class="container">
+  <h1>Create new sheet{{#if user }} - {{ user.username }}{{/if }}</h1>
+  <form action="/uploadText" method="post" enctype="application/x-www-form-urlencoded">
+  <input type="hidden" name="week" value="10" />
+  <aside>
+    <a class="btn btn-primary" type="button" data-bs-toggle="collapse" href="#instructions" role="button" aria-expanded="false" aria-controls="collapseExample">Instructions</a>
+    <div class="collapse" id="instructions">
+      <div class="card card-body">
+        <p>You can use markdown in text descriptions.</p>
+        <ul>
+          <li>_italics_ &gt; <i>italics</i></li>
+          <li>**bold** &gt; <strong>bold</strong></li>
+          <li>~strikethrough~ &gt; <del>strikethrough</del></li>
+        </ul>
+        <p>Drag images from a folder onto the relevant box. Images must be smaller than {{ image_size_limit }}KB, and one of the following formats: <code>.jpg | .jpeg | .gif | .png | .svg</code></p>
+      </div>
+    </div>
+  </aside>
+  <fieldset>
+    <legend>Details of Groups</legend>
+    <table class="table">
+      <thead>
+        <th>Group</th>
+        <th>Explanation</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A</td>
+          <td><input type="text" required class="form-control" placeholder="(e.g. All Italian Prime Ministers)" name="explanation_text" id=""><input type="hidden" name="group_id" value="A"></td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="B"></td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="C"></td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="D"></td>
+        </tr>
+        <tr>
+          <td>E</td>
+          <td><input type="text" required class="form-control" name="explanation_text" id=""><input type="hidden" name="group_id" value="E"></td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+
+  <fieldset>
+    <legend>Details of pictures</legend>
+    <table class="table">
+      <thead>
+        <th>Q.</th>
+        <th>Image</th>
+        <th>Text</th>
+        <th>Group</th>
+      </thead>
+      <tbody>
+        {{#each data }}
+        <tr>
+          <td>{{ this }}</td>
+          <td>
+            {{!-- <input type="file" name="file1"> --}}
+            <div id="pic{{ this }}" class="drop_zone">
+              <img src="/img/dl.svg" alt="Upload"><p>Drag image here</p>
+            </div>
+          </td>
+          <td>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Answer</span>
+              <input type="text" class="form-control" {{#if @first }}placeholder="(e.g. Silvio Berlusconi)"{{/if }} name="ans">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Clarification Text</span>
+              <input type="text" class="form-control" {{#if @first }}placeholder="(e.g. the one on the left)"{{/if }} name="ct">
+              <span class="input-group-text">Link Text</span>
+              <input type="text" class="form-control" name="lt" {{#if @first }}placeholder="(e.g. TRIOS)"{{/if }}>
+            </div>
+          </td>
+          <td>
+            <select class="form-select" name="group" id="">
+              <option selected>Group</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+            </select>
+          </td>
+        </tr>
+        {{/each }}
+      </tbody>
+    </table>
+  </fieldset>
+  <button type="submit" name="submit" value="true" class="button">Upload</button>
+  </form>
+</section>
+
+<style>
+  .drop_zone {
+    border: 2px dotted blue;
+    width: 100px;
+    height: 100px;
+  }
+</style>
+
+<script>
+
+  const endpoints = { IMAGE: '/uploadImage', TEXT: '/upload' };
+
+  $('button').on('click', function(e) {
+
+  });
+
+  // set up event handlers for drag'n'drop 
+  $('.drop_zone').on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+    
+    e.preventDefault();
+    e.stopPropagation();
+
+  }).on('dragover dragenter', function(e) {
+
+    $(this).addClass('dragging');
+
+  }).on('dragend dragleave', function(e) {
+
+    $(this).removeClass('dragging');
+
+  }).on('drop', async function(e) {
+
+    e.preventDefault();
+    const { files } = e.originalEvent.dataTransfer;
+    if (files.length > 1) {
+      console.error('more than file dropped');
+    //} else if (files[0].size > {{ image_size_limit }}) {
+      //console.error('file too large!');
+    } else {
+      previewImage(files[0], $(this));
+      const res = await uploadImage(files[0]);
+      console.log(res);
+    }
+  });
+
+  const previewImage = (file, tar) => {
+    // preview the file in the drop box
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener('load', e => {
+      const html = `<img src="${ e.target.result }" style="width: 100%; height: 100%;" alt="${ file.name }">`;
+      tar.html(html);
+    })
+  }
+
+  const uploadImage = async (image) => {
+    //use fetch API to submit the image to the server
+    const fd = new FormData();
+    fd.append('image', image, image.name);
+    fd.append('week', '2');
+
+    const resp = await fetch(endpoints.IMAGE, {
+      method: 'POST',
+      body: fd
+    });
+
+    return await resp.text();
+  }
+
+</script>

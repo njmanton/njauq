@@ -1,0 +1,26 @@
+<section class="container">
+  <h1>Dashboard</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Week</th>
+        <th scope="col">Deadline</th>
+        <th scope="col">Questions</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data }}
+      <tr>
+        <th scope="row"><a href="/quiz/{{ id }}">{{ id }}</a></th>
+        <td>{{ format }}</td>
+        <td>{{ questions }}</td>
+        <td>
+          {{#if preview }} <span class="badge bg-warning">PREVIEW</span> {{/if }}
+          {{#if live }} <span class="badge bg-primary">LIVE</span> {{/if }}
+        </td>
+      </tr>
+      {{/each }}
+    </tbody>
+  </table>
+</section>

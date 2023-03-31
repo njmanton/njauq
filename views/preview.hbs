@@ -1,0 +1,36 @@
+<section class="container">
+  <h2>Validation check for Week {{ week }}</h2>
+  <div class="row">
+    <div class="col">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Q.</th>
+            <th scope="col">Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each data.questions }}
+          <tr>
+            <th scope="row">{{ @index }} {{#if this }}Y{{ else }}N{{/if }}</th>
+            <td>{{#if this }} <img style="width:200px" src="/img/week{{ ../week }}/{{ @index }}.png" /> {{/if }}</td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <p>Number of Links: {{ data.links }}</p>
+      <table class="table">
+        <tbody>
+          {{#each data.link_count }}
+          <tr>
+            <th>{{ linkd }}</th>
+            <td>{{ cnt }}</td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

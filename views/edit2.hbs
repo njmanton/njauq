@@ -1,0 +1,37 @@
+<section id="qaccordion" class="container" data-wk="{{ week }}" {{#if answers}}data-ans="true"{{/if}}>
+  <h2>✍🏻 Add new questions to week {{ week }}</h2>
+
+  <div class="grid">
+    {{#each questions }}
+      {{>grid-item-form this }}
+    {{/each }}
+  </div>
+
+  <h4>Link explanations</h4>
+  <div id="link_table">
+    <form id="links_form" action="/submitLinks" method="post">
+      <input type="hidden" name="week" value="{{ week }}">
+      <table class="table">
+        <thead>
+          <tr>
+            <th role="col">Group</th>
+            <th role="col">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each links }}
+          <tr>
+            <th role="row">{{ group_id }}</th>
+            <td>
+              <input type="hidden" name="gp" value="{{ group_id }}">
+              <input type="text" class="form-control" name="et" value="{{ explanation_text }}" required>
+            </td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+      <input class="" type="submit" value="Save"> <span id="outcome"></span>
+    </form>
+  </div>
+
+</section>

@@ -1,0 +1,48 @@
+<section class="container">
+  <h2>Week {{ week }}</h2>
+  <div class="row link-color">
+    <div class="col">
+      <table class="table">
+        <tbody>
+          {{#each rowsA }}
+          <tr data-gp="{{ group_id }}">
+            <td>{{ q_order }}</td>
+            <td>{{{ answer_text }}} <b>{{ link_text }}</b></td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <table class="table">
+        <tbody>
+          {{#each rowsB }}
+          <tr data-gp="{{ group_id }}">
+            <td>{{ q_order }}</td>
+            <td>{{{ answer_text }}} <b>{{ link_text }}</b></td>
+          </tr>
+          {{/each }}
+        </tbody>
+      </table>
+    </div>    
+  </div>
+</section>
+<section class="container">
+  <table id="groups" class="table">
+    <thead>
+      <th colspan="5">Members</th>
+      <th>Reason</th>
+    </thead>
+    <tbody>
+      {{#each groups }}
+      <tr data-group="{{ @key }}">
+        <td>Group {{ @key }}</td>
+        {{#each this.qs }}
+        <td>{{ this }}</td>
+        {{/each}}
+        <td>{{ this.text }}</td>
+      </tr>
+      {{/each }}
+    </tbody>
+  </table>
+</section>
