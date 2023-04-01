@@ -24,7 +24,7 @@ router.get('/latest', async (req, res) => {
       debug: debug(data),
       pictures: data,
       week: wid,
-      qr: await QRCode.toDataURL(`https://njauq.mxxyqh.com/quiz${ wid }/?=qr`)
+      qr: await QRCode.toDataURL(`https://udderquiz.mxxyqh.com/quiz${ wid }/?=qr`)
     })
   } catch (error) {
     res.status(500).send(false);
@@ -38,7 +38,7 @@ router.get('/quiz/:wid', async (req, res, next) => {
     debug: debug(data),
     pictures: data,
     week: req.params.wid,
-    qr: await QRCode.toDataURL(`https://njauq.mxxyqh.com/quiz${ req.params.wid }/?=qr`),
+    qr: await QRCode.toDataURL(`https://udderquiz.mxxyqh.com/quiz${ req.params.wid }/?=qr`),
     status: await Week.status(req.params.wid)
   });
 });
