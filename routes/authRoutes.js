@@ -15,7 +15,6 @@ const isAuthenticated = (req, res, next) => {
   }
   req.session.returnTo = req.url;
   res.redirect('/login');
-  return next();
 }
 
 passport.use(new LocalStrategy(async (username, password, cb) => {
@@ -44,7 +43,7 @@ authRouter.get('/login', (req, res) => {
 
 authRouter.get('/logout', (req, res, next) => {
   
-  const logging_out_user = req.user.username;
+  const logging_out_user = (req.user) ? req.user.username : null;
   req.logout(err => {
     if (err) { return next(err); }
     logger.info(`${ logging_out_user } logged out`);
@@ -54,6 +53,18 @@ authRouter.get('/logout', (req, res, next) => {
       message_text: 'Successfuly logged off'
     });
   });
+});
+
+authRouter.get('/dashboard', isAuthenticated, async (req, res) => {
+  try {
+    const data = await Week.list();
+    res.render('dashboard', {
+      data: data,
+      debug: debug(data)
+    });
+  } catch (err) {
+    res.status(500).send('Internal error');
+  }
 });
 
 authRouter.get('/status/:wid', async (req, res) => {

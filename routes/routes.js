@@ -15,18 +15,6 @@ router.get('/', (req, res) => {
   res.render('main');
 })
 
-router.get('/dashboard', async (req, res) => {
-  try {
-    const data = await Week.list();
-    res.render('dashboard', {
-      data: data,
-      debug: debug(data)
-    });
-  } catch (err) {
-    res.status(500).send('Internal error');
-  }
-});
-
 router.get('/latest', async (req, res) => {
   try {
     const wid = await Week.latest(),
