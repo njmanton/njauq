@@ -40,7 +40,7 @@ export const Week = {
 
   list: async () => {
     try {
-      const sql = 'SELECT W.id, W.preview, W.live, DATE_FORMAT(W.deadline,"%Y-%m-%d") AS deadline, COUNT(Q.id) AS questions FROM weeks AS W INNER JOIN questions AS Q ON W.id = Q.week_id GROUP BY W.id, W.preview, W.live, W.deadline ORDER BY W.deadline DESC';
+      const sql = 'SELECT W.id, W.preview, W.live, DATE_FORMAT(W.deadline,"%Y-%m-%d") AS deadline, COUNT(Q.id) AS questions FROM weeks AS W LEFT JOIN questions AS Q ON W.id = Q.week_id GROUP BY W.id, W.preview, W.live, W.deadline ORDER BY W.deadline DESC';
       let [rows] = await db.query(sql);
 
       rows.map(r => {
