@@ -88,23 +88,23 @@ div.alert {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-div.link-color.group-A {
+td.group-A, .link-color.group-A {
 background-color: tan!important;
 }
 
-div.link-color.group-B {
+td.group-B, .link-color.group-B {
 background-color: lightblue;
 }
 
-div.link-color.group-C {
-background-color: mediumturquoise;
-}
-
-div.link-color.group-D {
+td.group-C, .link-color.group-C {
 background-color: bisque;
 }
 
-div.link-color.group-E {
+td.group-D, .link-color.group-D {
+background-color: turquoise;
+}
+
+td.group-E, .link-color.group-E {
   background-color: lemonchiffon!important;
 }
 
@@ -123,6 +123,12 @@ table.answer_sheet td {
 @media (min-width: 990px) {
   .caption {
     display: inline;
+  }
+}
+
+@media screen {
+  .qr-code {
+    display: none;
   }
 }
 
