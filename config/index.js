@@ -3,7 +3,7 @@ import { existsSync, mkdirSync } from 'node:fs';
 
 export const debug = data => {
   try {
-    return process.env.NJAUQ_DEV ? JSON.stringify(data, null, 2) : null;
+    return ( process.env.NJAUQ_DEV == 1 ) ? JSON.stringify(data, null, 2) : null;
   } catch (error) {
     console.error(error);
     return null;
