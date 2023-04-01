@@ -115,18 +115,20 @@ authRouter.get('/checkWeek/:wid', async (req, res) => {
   })
 });
 
-authRouter.post('/submit', async (req, res) => {
+authRouter.post('/submit', isAuthenticated, async (req, res) => {
   if (req.files && req.files.image) {
     const data = await Week.insert(req.body, req.files.image);
+    logger.info(`Question ${ req.body.qid } for week ${ req.body.week } has been updated [${ req.user.username }]`);
     res.send(data);    
   } else {
     res.status(400).send(false);
   }
 });
 
-authRouter.post('/submitLinks', async (req, res) => {
+authRouter.post('/submitLinks', isAuthenticated, async (req, res) => {
   try {
     const data = await Week.insertLinks(req.body);
+    logger.info(`Links for week ${ req.body.week } have been updated [${ req.user.username }]`);
     res.send(data);
   } catch (error) {
     console.error(error);
@@ -134,7 +136,7 @@ authRouter.post('/submitLinks', async (req, res) => {
   }
 });
 
-authRouter.post('/publish', async (req, res) => {
+authRouter.post('/publish', isAuthenticated, async (req, res) => {
   // publish a week to make it available to users
   // set preview flag to 0 and live to 1
   try {
