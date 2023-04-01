@@ -3,22 +3,28 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Week</th>
+        <th scope="col" colspan="2">Week</th>
+        <th scope="col">Actions</th>
         <th scope="col">Deadline</th>
         <th scope="col">Questions</th>
-        <th scope="col">Status</th>
       </tr>
     </thead>
     <tbody>
       {{#each data }}
       <tr>
-        <th scope="row"><a href="/quiz/{{ id }}">{{ id }}</a></th>
-        <td>{{ format }}</td>
-        <td>{{ questions }}</td>
-        <td>
+        <th scope="row">
+          {{ id }}
+        </th>
+        <th>
           {{#if preview }} <span class="badge bg-warning">PREVIEW</span> {{/if }}
           {{#if live }} <span class="badge bg-primary">LIVE</span> {{/if }}
+        </th>
+        <td>
+          <span><a href="/quiz/{{ id }}"><img src="/img/icons/eye-fill.svg" alt="View"></a></span>
+          <span><a href="/quiz/{{ id }}/edit"><img src="/img/icons/pencil-square.svg" alt="Edit"></a></span>
         </td>
+        <td>{{ format }}</td>
+        <td>{{ questions }}</td>
       </tr>
       {{/each }}
     </tbody>
