@@ -13,6 +13,7 @@ nav {
     text-align: right;
   }
 }
+
 .col {
   border: 1px solid black;
   padding: 1em;
@@ -25,6 +26,13 @@ nav {
   // p {
   //   margin-bottom: 0;
   // }
+}
+
+div.alert {
+  svg {
+    height: 2em;
+    width: 2em;
+  }
 }
 
 .debug {

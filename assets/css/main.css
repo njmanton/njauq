@@ -21,6 +21,11 @@ nav p {
   margin-bottom: 0.3em;
 }
 
+div.alert svg {
+  height: 2em;
+  width: 2em;
+}
+
 .debug {
   background-color: #222;
   border-left: 0.6em #daa520 solid;
