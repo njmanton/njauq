@@ -154,7 +154,19 @@ export const Week = {
       return rows;
     } catch (error) {
       logger.error(`Error (${ error }) in Week.publish`);
-      return { err: error };
+      return { error: error };
+    }
+  },
+
+  removeQuestion: async (form) => {
+    // remove a question from the database. 
+    try {
+      const sql = 'DELETE FROM questions WHERE id = ?';
+      const [rows] = await db.execute(sql, [form.qid]);
+      return rows.affectedRows;
+    } catch (error) {
+      logger.error(`Error (${ error }) in Week.removeQuestion`);
+      return { error: error };
     }
   }
 

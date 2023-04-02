@@ -67,14 +67,15 @@ authRouter.get('/dashboard', isAuthenticated, async (req, res) => {
   }
 });
 
-authRouter.get('/status/:wid', async (req, res) => {
+authRouter.get('/status/:wid', async (req, res, next) => {
+  if (!Number.isInteger(req.params.wid * 1)) return next();
   res.send(await Week.status(req.params.wid));
 })
 
-authRouter.get('/quiz/:wid/edit', isAuthenticated, async (req, res) => {
+authRouter.get('/quiz/:wid/edit', isAuthenticated, async (req, res, next) => {
   // get data on questions/links for given week
   try {
-
+    if (!Number.isInteger(req.params.wid * 1)) return next();
     const qs = await Week.questions(req.params.wid, false),
           ls = await Week.links(req.params.wid, false);
 
@@ -101,7 +102,8 @@ authRouter.get('/quiz/:wid/edit', isAuthenticated, async (req, res) => {
 
 });
 
-authRouter.get('/checkWeek/:wid', async (req, res) => {
+authRouter.get('/checkWeek/:wid', isAuthenticated, async (req, res) => {
+  if (!Number.isInteger(req.params.wid * 1)) return next();
   // use this to check the validity of a given week
   // 1. are there 20 images uploaded with correct filenames
   // 2. are there 5 link entries
@@ -147,6 +149,16 @@ authRouter.post('/publish', isAuthenticated, async (req, res) => {
     res.status(500).send({ error: error });
   }
 });
+
+authRouter.delete('/delete', async (req, res) => {
+  try {
+    const data = await Week.deleteQuestion(req.body);
+    res.send(data);
+  } catch (error) {
+    logger.error('Error in deleting question');
+    res.status(500).send({ error: error });
+  }
+})
 
 authRouter.post('/login', passport.authenticate('local', {
   keepSessionInfo: true,
