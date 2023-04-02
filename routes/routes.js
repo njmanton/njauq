@@ -33,13 +33,17 @@ router.get('/latest', async (req, res) => {
 
 router.get('/quiz/:wid', async (req, res, next) => {
   if (!Number.isInteger(req.params.wid * 1)) return(next());
+  const status = await Week.status(req.params.wid);
+  // only render the quiz if it's live _or_ an admin is logged in
+  if (status.preview && !req.user) res.status(403).send('Quiz unavailable');
+
   const data = await Week.questions(req.params.wid);
   res.render('questions', {
-    debug: debug(data),
+    debug: debug([data, status]),
     pictures: data,
     week: req.params.wid,
     qr: await QRCode.toDataURL(`https://udderquiz.mxxyqh.com/quiz/${ req.params.wid }/?=qr`),
-    status: await Week.status(req.params.wid)
+    status: status
   });
 });
 
