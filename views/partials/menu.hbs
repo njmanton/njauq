@@ -2,7 +2,7 @@
   <p>
     {{#if user }}
     Logged in as: {{ user.username }} | 
-    {{#if status.preview }} <a href="edit">Edit this quiz</a> | {{/if }}
+    {{#if status.preview }} <a href="/quiz/{{ week }}/edit">Edit this quiz</a> | {{/if }}
     <a href="/dashboard">Dashboard</a> | 
     <a href="/logout">Logout</a>
     {{ else }}<a href="/login">Login</a>

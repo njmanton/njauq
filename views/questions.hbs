@@ -1,5 +1,6 @@
 <section class="container" data-wk="{{ week }}" {{#if answers}}data-ans="true"{{/if}}>
-  <h2 class="d-print-none">Week {{ week }} {{#if answers }}- Answers{{/if }}</h2>
+  <h2 class="d-print-none">Quiz {{ week }} {{#if answers }}- Answers{{/if }} {{#if status.preview }} <span class="badge bg-warning">PREVIEW</span> {{/if }}</h2>
+  
   <div class="print-heading d-none d-print-block">
     <table class="table">
       <tbody>
