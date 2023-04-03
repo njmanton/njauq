@@ -112,6 +112,15 @@ table.answer_sheet td {
   border: 1px solid black;
 }
 
+#dashboard svg {
+  height: 1.5em;
+  width: 1.5em;
+  margin: 0 0.5em;
+}
+#dashboard svg:hover {
+  fill: #daa520;
+}
+
 @media (min-width: 990px) {
   .caption {
     display: inline;

@@ -1,6 +1,6 @@
 <section class="container">
   <h1>Dashboard</h1>
-  <table class="table">
+  <table id="dashboard" class="table">
     <thead>
       <tr>
         <th scope="col" colspan="2">Week</th>
@@ -20,9 +20,9 @@
           {{#if live }} <span class="badge bg-primary">LIVE</span> {{/if }}
         </th>
         <td>
-          <span><a href="/quiz/{{ id }}"><img title="View Quiz" src="/img/icons/eye-fill.svg" alt="View"></a></span>
-          <span><a href="/quiz/{{ id }}/edit"><img title="Edit Quiz" src="/img/icons/pencil-square.svg" alt="Edit"></a></span>
-          <span><a href="/quiz/{{ id }}/sheet"><img title="View Answers" src="/img/icons/lightbulb-fill.svg" alt="Answers"></a></span>
+          <span><a title="View Quiz" href="/quiz/{{ id }}">{{>icons/eye }}</a></span>
+          <span><a title="Edit Quiz" href="/quiz/{{ id }}/edit">{{>icons/pencil }}</a></span>
+          <span><a title="View Answers" href="/quiz/{{ id }}/sheet">{{>icons/lightbulb }}</a></span>
         </td>
         <td>{{ format }}</td>
         <td>{{ questions }}</td>
