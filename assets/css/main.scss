@@ -93,6 +93,9 @@ div.alert {
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  img {
+    cursor: zoom-in;
+  }
 }
 
 td.group-A, .link-color.group-A {

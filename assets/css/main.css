@@ -79,6 +79,9 @@ div.alert svg {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+.grid img {
+  cursor: zoom-in;
+}
 
 td.group-A, .link-color.group-A {
   background-color: tan !important;
