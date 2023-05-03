@@ -32,10 +32,10 @@ router.get('/latest', async (req, res) => {
 });
 
 router.get('/quiz/:wid', async (req, res, next) => {
-  if (!Number.isInteger(req.params.wid * 1)) return(next());
+  if (!Number.isInteger(req.params.wid * 1)) return next();
   const status = await Week.status(req.params.wid);
   // only render the quiz if it's live _or_ an admin is logged in
-  if (status.preview && !req.user) res.status(403).send('Quiz unavailable');
+  if (status.preview && !req.user) return res.status(403).send('Quiz unavailable');
 
   const data = await Week.questions(req.params.wid);
   res.render('questions', {
@@ -47,8 +47,16 @@ router.get('/quiz/:wid', async (req, res, next) => {
   });
 });
 
+router.get('/api/quiz/:wid', async (req, res, next) => {
+  if (!Number.isInteger(req.params.wid * 1)) return next();
+  const status = await Week.status(req.params.wid);
+  if (status.preview && !req.user) return res.status(403).send('Quiz unavailable');
+
+  res.send(await Week.questions(req.params.wid));
+});
+
 router.get('/quiz/:wid/answers', async (req, res, next) => {
-  if (!Number.isInteger(req.params.wid * 1)) return(next());
+  if (!Number.isInteger(req.params.wid * 1)) return next() ;
   const data = await Week.questions(req.params.wid);
   res.render('questions', {
     debug: debug(data),
@@ -59,7 +67,7 @@ router.get('/quiz/:wid/answers', async (req, res, next) => {
 });
 
 router.get('/quiz/:wid/sheet', async (req, res, next) => {
-  if (!Number.isInteger(req.params.wid * 1)) return(next());
+  if (!Number.isInteger(req.params.wid * 1)) return next();
   const data = await Week.sheet(req.params.wid);
   res.render('sheet', {
     debug: debug(data),
