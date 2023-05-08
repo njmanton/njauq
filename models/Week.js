@@ -10,14 +10,15 @@ import { minify } from '../config/index.js';
 
 export const Week = {
 
-  questions: async (wid, parse = true) => {
+  questions: async (wid, parse = true, random = false) => {
     try {
-      const sql = 'SELECT Q.id, clarification_text, Q.week_id, answer_text, link_text, q_order, Q.link, group_id FROM questions AS Q LEFT JOIN links AS L ON L.link = Q.link WHERE Q.week_id = ? ORDER BY CAST(q_order AS UNSIGNED)';
+      const order = (random == true) ? 'fixed_order DESC, RAND()' : 'Q.q_order',
+            sql = `SELECT Q.id, clarification_text, Q.week_id, answer_text, link_text, q_order, Q.link, group_id FROM questions AS Q LEFT JOIN links AS L ON L.link = Q.link WHERE Q.week_id = ? ORDER BY ${ order }`;
       let [rows] = await db.execute(sql, [wid]);
       rows.map(row => { 
         if (parse) { row.answer_text = marked.parseInline(row.answer_text); }
         row.group_id = row.group_id || row.link.at(-1); 
-      })
+      });
       return rows;
     } catch (err) {
       logger.error(`error (${ err }) in Week.questions`);

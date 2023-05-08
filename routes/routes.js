@@ -37,7 +37,7 @@ router.get('/quiz/:wid', async (req, res, next) => {
   // only render the quiz if it's live _or_ an admin is logged in
   if (status.preview && !req.user) return res.status(403).send('Quiz unavailable');
 
-  const data = await Week.questions(req.params.wid);
+  const data = await Week.questions(req.params.wid, true, req.query.random);
   res.render('questions', {
     debug: debug([data, status]),
     pictures: data,
