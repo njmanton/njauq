@@ -86,9 +86,10 @@ export const Week = {
   insert: async (form, image) => {
     try {
       const stats = await minify(form.week, form.qid, image);
-      const sql = 'INSERT INTO questions (week_id, clarification_text, answer_text, link_text, q_order, link) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE clarification_text = ?, answer_text = ?, link_text = ?, link = ?';
+      const sql = 'INSERT INTO questions (week_id, clarification_text, answer_text, link_text, q_order, fixed_order, link) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE clarification_text = ?, answer_text = ?, link_text = ?, fixed_order = ?, link = ?';
       const gp = `${ form.week }${ form.group }`;
-      const [rows] = await db.execute(sql, [form.week, form.ct || null, form.ans, form.lt, form.qid, gp, form.ct || null, form.ans, form.lt, gp]);
+      const fo = (form.fixed_order = 'on') ? 1 : 0;
+      const [rows] = await db.execute(sql, [form.week, (form.ct || null), form.ans, form.lt, form.qid, fo, gp, (form.ct || null), form.ans, form.lt, fo, gp]);
       return { stats: stats, rows: rows.affectedRows};
     } catch (error) {
       console.error(error);
