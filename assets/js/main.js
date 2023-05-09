@@ -72,7 +72,6 @@ $(document).ready(function() {
   // handle question form submissions;
   $('#qaccordion').on('submit', 'form', async function(e) {
     try {
-
       e.preventDefault();
       e.stopPropagation();
 
@@ -104,7 +103,7 @@ $(document).ready(function() {
           body: fd
         }).then(async r => {
           if (r.status != 200) {
-            $(`#status${ qid }]`).html(`<span color="red">There was an error saving the image</span>`);
+            $(`#status${ qid }`).html(`<span color="red">There was an error saving the image</span>`);
           } else {
             const resp = await r.json();
             const fn = `/img/week${ wid }/${ qid }.jpg`;
@@ -131,11 +130,19 @@ $(document).ready(function() {
   // function to show preview of a dropped image
   const previewImage = (file, tar) => {
     // preview the file in the drop box
+    const id = tar.data('qid');
     const reader = new FileReader();
     reader.readAsDataURL(file);
+    let aspect = '';
     reader.addEventListener('load', e => {
-      const html = `<img src="${ e.target.result }" style="width: 100%; height: 100%;" alt="${ file.name }">`;
-      tar.html(html);
+      // create a new Image object to get the aspect ratio of the preview to size it correctly
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = function(ie){
+        aspect = (this.naturalHeight > this.naturalWidth) ? 'height: 100%' : 'width: 100%';
+        const html = `<img src="${ e.target.result }" style="${ aspect }" alt="${ file.name }">`;
+        tar.html(html);
+      }
     })
   }
 

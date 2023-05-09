@@ -6,7 +6,7 @@
       <input required type="text" id="ans{{ q_order }}" value="{{{ answer_text }}}" class="form-control" placeholder="Q{{ q_order }} Answer (e.g. Silvio)" name="ans">
       <label for="ans{{ q_order }}">Q{{ q_order }} Answer {{#if @first }}(e.g. Silvio Berlusconi){{/if }}</label>
     </div>
-    <div data-qid="{{ @index }}" id="pic{{ @index }}" class="drop_zone" data-fn="">
+    <div data-qid="{{ @index }}" id="pic{{ @index }}" class="drop_zone" style="display: flex; justify-content: center;" data-fn="">
       {{#if id }}
       <img class="preview" src="/img/week{{ week_id }}/{{ q_order }}.jpg" alt="{{ answer_text }}">
       {{ else }}
@@ -21,7 +21,7 @@
       <input required value="{{ link_text }}" type="text" class="form-control" id="lt{{ q_order }}" placeholder="Link Text (e.g. TRIOS)" name="lt">
       <label for="lt{{ q_order }}">Q{{ q_order }} Link Text</label>
     </div>
-    <select required class="" name="group" id="">
+    Group<select required class="" name="group" id="">
       <option>--</option>
       <option {{ select group_id 'A'}} value="A">A</option>
       <option {{ select group_id 'B'}} value="B">B</option>
@@ -29,6 +29,7 @@
       <option {{ select group_id 'D'}} value="D">D</option>
       <option {{ select group_id 'E'}} value="E">E</option>
     </select>
+    <input type="checkbox" name="fixed" id="fx{{ q_order }}"> Fix
     <button type="submit" name="submit" value="true" class="button">Save</button>
     <span id="status{{ q_order }}" data-qid="{{ @index }}">&nbsp;</span>
   </form>
