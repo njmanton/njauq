@@ -7,3 +7,4 @@ TODO.md
 .vscode
 .DS_Store
 .env
+nodemon.json
