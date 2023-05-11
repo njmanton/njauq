@@ -1,6 +1,5 @@
 // jshint node: true, esversion: 6
 'use strict';
-import { db } from '../models/index.js';
 import { Week } from '../models/Week.js';
 import { debug } from '../config/index.js';
 import express from 'express';
