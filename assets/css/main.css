@@ -62,6 +62,10 @@ div.alert svg {
   text-align: center;
 }
 
+.missing_drop {
+  border: 3px solid red !important;
+}
+
 .edit-grid-cell {
   margin: 0.2em;
   border: 3px solid red;
@@ -69,10 +73,6 @@ div.alert svg {
 
 .edit-grid-cell.cell-saved {
   border: 3px solid darkgreen;
-}
-
-.dragging {
-  background-color: lemonchiffon;
 }
 
 .grid {
@@ -84,23 +84,23 @@ div.alert svg {
 }
 
 td.group-A, .link-color.group-A {
-  background-color: tan !important;
+  background-color: #3795dc !important;
 }
 
 td.group-B, .link-color.group-B {
-  background-color: lightblue;
+  background-color: #31AF97;
 }
 
 td.group-C, .link-color.group-C {
-  background-color: bisque;
+  background-color: #6FE9F6;
 }
 
 td.group-D, .link-color.group-D {
-  background-color: turquoise;
+  background-color: #cd80c8;
 }
 
 td.group-E, .link-color.group-E {
-  background-color: lemonchiffon !important;
+  background-color: #6FE9F6 !important;
 }
 
 .caption {

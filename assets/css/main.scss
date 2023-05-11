@@ -2,6 +2,11 @@
 @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css');
 
 $gold: #daa520;
+$linkA: #3795dc;
+$linkB: #31AF97;
+$linkC: #6FE9F6;
+$linkD: #cd80c8;
+$linkE: #DF000A;
 
 h2 {
   span {
@@ -78,6 +83,10 @@ div.alert {
 
 }
 
+.missing_drop {
+  border: 3px solid red!important;
+}
+
 .edit-grid-cell { 
   margin: 0.2em; 
   border: 3px solid red;
@@ -86,9 +95,6 @@ div.alert {
   border: 3px solid darkgreen;
 }
 
-.dragging {
-  background-color: lemonchiffon;
-}
 
 .grid {
   display: grid;
@@ -99,23 +105,23 @@ div.alert {
 }
 
 td.group-A, .link-color.group-A {
-background-color: tan!important;
+background-color: $linkA!important;
 }
 
 td.group-B, .link-color.group-B {
-background-color: lightblue;
+background-color: $linkB;
 }
 
 td.group-C, .link-color.group-C {
-background-color: bisque;
+background-color: $linkC;
 }
 
 td.group-D, .link-color.group-D {
-background-color: turquoise;
+background-color: $linkD;
 }
 
 td.group-E, .link-color.group-E {
-  background-color: lemonchiffon!important;
+  background-color: $linkC!important;
 }
 
 .caption {
