@@ -66,7 +66,7 @@ $(document).ready(function() {
 
     previewImage(image_file, _this);
     _this.data('fn', image_file.name);
-
+    _this.removeClass('missing_drop');
   });
 
   // handle question form submissions;
@@ -115,6 +115,7 @@ $(document).ready(function() {
               content: `Image saved as <code>${ fn }</code><br>Original File: <code>${ resp.stats.old_dimensions} / ${ resp.stats.old_size }</code><br>New File: <code>${ resp.stats.new_dimensions } / ${ resp.stats.new_size }</code><br>${ resp.stats.reduction }x size reduction. <a target="_blank" href="${ fn }">Preview &#x29c9;</a>`,
               title: `File details` 
             });
+            image_file = null;
           }
         });
 
@@ -149,12 +150,22 @@ $(document).ready(function() {
   // ensure each form is valid
   const validate = form => {
     // browser should take care of ans/lt required fields. Need to check image and select box
-
+    const question = form.data('qid');
+    const drop_zone = $(`div[data-qid="${ question }"]`);
     const data = form.serializeArray();
     let valid = true;
-    const gp = data.find(({ name }) => name == 'group');
-    const temp = ['A','B','C','D','E'].includes(gp.value);
-    return valid && temp;
+    const gp = data.find(({ name }) => name == 'group'),
+          temp = ['A','B','C','D','E'].includes(gp.value),
+          img = (image_file !== null);
+
+    if (!img) {
+      // highlight image box
+      drop_zone.addClass('missing_drop');
+    } else {
+      drop_zone.removeClass('missing_drop');
+    }
+
+    return valid && temp && img;
   }
 
 })

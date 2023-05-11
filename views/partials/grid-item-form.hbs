@@ -22,22 +22,15 @@
       <label for="lt{{ q_order }}">Q{{ q_order }} Link Text</label>
     </div>
     Group<select required class="" name="group" id="">
-      <option>--</option>
+      <option selected disabled value="">--</option>
       <option {{ select group_id 'A'}} value="A">A</option>
       <option {{ select group_id 'B'}} value="B">B</option>
       <option {{ select group_id 'C'}} value="C">C</option>
       <option {{ select group_id 'D'}} value="D">D</option>
       <option {{ select group_id 'E'}} value="E">E</option>
     </select>
-    <input type="checkbox" name="fixed" id="fx{{ q_order }}"> Fix
+    <input type="checkbox" name="fixed" id="fx{{ q_order }}"> <abbr title="Pin this question to the top of the round (if displaying in random order)">Fix</abbr>
     <button type="submit" name="submit" value="true" class="button">Save</button>
     <span id="status{{ q_order }}" data-qid="{{ @index }}">&nbsp;</span>
   </form>
 </div>
-<style>
-  .drop_zone { margin: 0.2em auto; }
-
-  .edit-grid-cell { margin: 0.2em; border: 2px solid red; }
-
-  .upload_status { background-color: #ff9;}
-</style>
