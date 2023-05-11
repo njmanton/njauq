@@ -118,7 +118,7 @@ authRouter.get('/checkWeek/:wid', isAuthenticated, async (req, res) => {
 });
 
 authRouter.post('/submit', isAuthenticated, async (req, res) => {
-  if (req.files && req.files.image) {
+  if (req.body && req.files && req.files.image) {
     const data = await Week.insert(req.body, req.files.image);
     logger.info(`Question ${ req.body.qid } for week ${ req.body.week } has been updated [${ req.user.username }]`);
     res.send(data);    
