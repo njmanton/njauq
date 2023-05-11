@@ -70,7 +70,13 @@ export const Week = {
       const [rows] = await db.execute(sql, [wid]);
       
       // define an object to hold the links explanation
-      let grouped = { 'A': { qs: [], text: '' }, 'B': { qs: [], text: '' }, 'C': { qs: [], text: '' }, 'D': { qs: [], text: '' }, 'E': { qs: [], text: '' } };
+      let grouped = { 
+        'A': { qs: [], text: '' }, 
+        'B': { qs: [], text: '' }, 
+        'C': { qs: [], text: '' }, 
+        'D': { qs: [], text: '' }, 
+        'E': { qs: [], text: '' }
+      };
       rows.map(row => { 
         grouped[row.group_id].qs.push(row.q_order);
         if (grouped[row.group_id].text == '') grouped[row.group_id].text = row.explanation_text;
